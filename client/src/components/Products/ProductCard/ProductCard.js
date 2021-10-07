@@ -7,6 +7,8 @@ const ProductCard = ({ id, title, description, price }) => {
   const { Title } = Typography;
 
   const handleClick = () => {
+    const data = JSON.stringify(id);
+    Axios.delete("http://localhost:3001/delete-product", data);
     console.log(id);
   };
 

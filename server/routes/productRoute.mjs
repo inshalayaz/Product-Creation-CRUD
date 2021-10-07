@@ -28,4 +28,17 @@ router.post("/add-product", async (req, res) => {
   }
 });
 
+router.delete("/delete-product/:id", async (req, res) => {
+  try {
+    const id = req.parms;
+    const deleteProduct = await pool.query(
+      "DELETE FROM products where id = ($1)",
+      [id]
+    );
+    res.json("Product was deleted");
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 export default router;
