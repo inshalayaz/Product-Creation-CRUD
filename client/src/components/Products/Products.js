@@ -1,7 +1,6 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Row, Col, Typography } from "antd";
 import CreateProduct from "./CreateProduct/CreateProduct";
-import Data from "./Data";
 import ProductCard from "./ProductCard/ProductCard";
 import Axios from "axios";
 import { AppContext } from "../../context/AppContext";
@@ -14,9 +13,8 @@ const Products = () => {
     Axios.get("http://localhost:3001/product").then((res) => {
       console.log(res.data);
       setProducts(res.data);
-      console.log(products);
     });
-  }, []);
+  }, [setProducts]);
   return (
     <Row>
       <Col span={24}>
@@ -30,7 +28,7 @@ const Products = () => {
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}></Row>
 
       {products
-        ? products.map(({ id, title, description, price }) => (
+        ? products.map(({ id, title, description, price, image }) => (
             <Col className="gutter-row" span={6} key={id}>
               <div style={style}>
                 <ProductCard
@@ -38,6 +36,7 @@ const Products = () => {
                   title={title}
                   description={description}
                   price={price}
+                  Img={image}
                 />
               </div>
             </Col>
