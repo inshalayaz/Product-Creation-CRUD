@@ -7,7 +7,7 @@ const app = express();
 const router = new express.Router();
 const upload = multer({ dest: "upload/" });
 
-app.use(bodyParser());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 router.get("/product", (req, res) => {
   pool.query("select * from products", (err, result) => {
@@ -17,36 +17,17 @@ router.get("/product", (req, res) => {
 
 router.post("/add-product", async (req, res) => {
   try {
-    const { title, description, price, file } = req.body;
+    const { title, description, price, file, catogory } = req.body;
     const newData = await pool.query(
-      "INSERT INTO products (title,description,price,image) VALUES($1,$2,$3,$4)",
-      [title, description, price, file]
+      "INSERT INTO products (title,description,price,image,catogory) VALUES($1,$2,$3,$4,$5)",
+      [title, description, price, file, catogory]
     );
     res.json(newData);
-    console.log(file);
+    // console.log(file);
   } catch (error) {
     console.log(error);
   }
 });
-
-// router.post("/add-product", upload.single("file"), async (req, res) => {
-//   try {
-//     const { uid } = req.body[1][0];
-//     // console.log(req.body[1][0]);
-//     const { title, description, price } = req.body[0];
-//     // const { file } = req.body[1];
-//     // console.log(req.body[1][1]);
-//     // const { uid } = req.body.file;
-//     console.log(uid);
-//     const newData = await pool.query(
-//       "INSERT INTO products (title,description,price) VALUES($1,$2,$3)",
-//       [title, description, price]
-//     );
-//     res.json(newData);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// });
 
 router.delete("/delete-product/:id", async (req, res) => {
   try {

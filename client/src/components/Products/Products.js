@@ -28,7 +28,7 @@ const Products = () => {
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}></Row>
 
       {products
-        ? products.map(({ id, title, description, price, image }) => (
+        ? products.map(({ id, title, description, price, image, catogory }) => (
             <Col className="gutter-row" span={6} key={id}>
               <div style={style}>
                 <ProductCard
@@ -37,6 +37,7 @@ const Products = () => {
                   description={description}
                   price={price}
                   Img={image}
+                  catogory={catogory}
                 />
               </div>
             </Col>

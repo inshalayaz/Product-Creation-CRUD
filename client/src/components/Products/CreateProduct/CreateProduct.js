@@ -4,6 +4,7 @@ import Axios from "axios";
 import { AppContext } from "../../../context/AppContext";
 import FileBase64 from "react-file-base64";
 import FormItem from "antd/lib/form/FormItem";
+import { Checkbox } from "antd";
 
 const layout = {
   labelCol: { span: 8 },
@@ -25,6 +26,8 @@ const validateMessages = {
 
 const CreateProduct = () => {
   const [data, setData] = useState([]);
+
+  const plainOptions = ["Male", "Large", "Programmer"];
 
   const { setProducts } = useContext(AppContext);
   const onFinish = () => {
@@ -102,7 +105,13 @@ const CreateProduct = () => {
         >
           <InputNumber onChange={(e) => setData({ ...data, price: e })} />
         </Form.Item>
-
+        <Form.Item label="Categotry">
+          <Checkbox.Group
+            options={plainOptions}
+            defaultValue={["Apple"]}
+            onChange={(e) => setData({ ...data, catogory: e })}
+          />
+        </Form.Item>
         <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
           <Button type="primary" htmlType="submit">
             Submit
