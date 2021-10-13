@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { Button, Card, Image, Typography } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import { Tag } from "antd";
+import uuid from "react-uuid";
 
 import Axios from "axios";
 import { AppContext } from "../../../context/AppContext";
@@ -13,7 +14,13 @@ const ProductCard = ({ id, title, description, price, Img, catogory }) => {
   const handleClick = () => {
     window.confirm("Are you sure you want to delete");
     Axios.delete(`http://localhost:3001/delete-product/${id}`).then((res) => {
-      Axios.get("http://localhost:3001/product").then((res) => {
+      console.log(res);
+      Axios.get("http://localhost:3001/product", {
+        headers: {
+          "x-access-token": localStorage.getItem("token"),
+        },
+      }).then((res) => {
+        console.log(res);
         setProducts(res.data);
         console.log(products);
       });
@@ -29,7 +36,7 @@ const ProductCard = ({ id, title, description, price, Img, catogory }) => {
         <Title level={4}> {description} </Title>
         <Title level={5}>${price}</Title>
         {catogory !== null ? (
-          catogory.map((c) => <Tag>{c}</Tag>)
+          catogory.map((c) => <Tag key={uuid()}>{c}</Tag>)
         ) : (
           <Tag>uncategorized</Tag>
         )}
