@@ -4,6 +4,7 @@ import { useDrop } from "react-dnd";
 import "./Style.css";
 import { Button } from "antd";
 import { AppContext } from "../../context/AppContext";
+import uuid from "react-uuid";
 
 const FieldList = [
   {
@@ -12,11 +13,15 @@ const FieldList = [
   },
   {
     id: 2,
-    type: "image",
+    type: "radio",
   },
   {
     id: 3,
     type: "checkbox",
+  },
+  {
+    id: 4,
+    type: "email",
   },
 ];
 
@@ -41,28 +46,49 @@ function Form() {
     setBoard(newBoard);
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(e.target);
+  };
+
   return (
     <>
-      <div className="Pictures">
+      <div className="fields">
         {FieldList.map((field) => {
           return <Field type={field.type} id={field.id} />;
         })}
       </div>
       <div className="Board" ref={drop}>
-        {board.map((field) => {
-          return (
-            <>
-              <Field type={field.type} id={field.id} />
-              <Button
-                type="primary"
-                danger
-                onClick={(e) => removeField(e, field.id)}
-              >
-                Delete
-              </Button>{" "}
-            </>
-          );
-        })}
+        <form onSubmit={handleSubmit}>
+          {board.map((field) => {
+            return (
+              <div className="inputs">
+                <input
+                  type={field.type}
+                  id={field.id}
+                  placeholder={field.type}
+                />
+
+                <Button
+                  type="primary"
+                  danger
+                  onClick={(e) => removeField(e, field.id)}
+                  className="btn"
+                >
+                  Delete
+                </Button>
+                <br />
+              </div>
+            );
+          })}
+          {board.length ? (
+            <button type="submit" value="Submit" style={{ marginTop: "30px" }}>
+              Submit
+            </button>
+          ) : (
+            ""
+          )}
+        </form>
       </div>
     </>
   );
