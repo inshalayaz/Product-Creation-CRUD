@@ -9,8 +9,15 @@ import Navbar from "./components/Products/Navbar/Navbar";
 import { AppContext } from "./context/AppContext";
 
 function App() {
+  var authStatus = false;
+  if (localStorage.getItem("profile") !== null) {
+    authStatus = true;
+  } else {
+    authStatus = false;
+  }
+
   const [products, setProducts] = useState();
-  const [loginStatus, setLoginStatus] = useState(false);
+  const [loginStatus, setLoginStatus] = useState(authStatus);
   return (
     <div className="App">
       <AppContext.Provider
