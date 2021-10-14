@@ -1,15 +1,16 @@
 import express from "express";
 import pool from "../config/db.js";
 import bodyParser from "body-parser";
-import multer from "multer";
-
+import cookieParser from "cookie-parser";
+import { verifyToken } from "../JWT.mjs";
 const app = express();
+app.use(cookieParser());
 const router = new express.Router();
-const upload = multer({ dest: "upload/" });
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
-router.get("/product", (req, res) => {
+router.get("/product", verifyToken, (req, res) => {
+  console.log(req.userId);
   pool.query("select * from products", (err, result) => {
     res.send(result.rows);
   });

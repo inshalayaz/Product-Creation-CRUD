@@ -37,7 +37,11 @@ const CreateProduct = () => {
 
     Axios.post("http://localhost:3001/add-product", data).then((res) => {
       console.log(res);
-      Axios.get("http://localhost:3001/product").then((res) => {
+      Axios.get("http://localhost:3001/product", {
+        headers: {
+          "x-access-token": localStorage.getItem("token"),
+        },
+      }).then((res) => {
         setProducts(res.data);
       });
     });

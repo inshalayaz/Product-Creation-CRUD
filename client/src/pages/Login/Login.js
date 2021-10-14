@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { Form, Input, Button, Checkbox, Typography } from "antd";
+import React, { useContext, useState } from "react";
+import { Form, Input, Button, Typography } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { ToastContainer, toast } from "react-toastify";
-
+import { useHistory } from "react-router";
 import "react-toastify/dist/ReactToastify.css";
 
 import Axios from "axios";
 import "./Styles.css";
+import { AppContext } from "../../context/AppContext";
 const Login = () => {
   Axios.defaults.withCredentials = true;
-  const [loginStatus, setLoginStatus] = useState();
-
+  // const [loginStatus, setLoginStatus] = useState(false);
+  const { loginStatus, setLoginStatus } = useContext(AppContext);
+  const history = useHistory();
   const onFinish = (values) => {
     // const data = new FormData(values);
     Axios.post("http://localhost:3001/login", values, {
@@ -20,7 +22,7 @@ const Login = () => {
         "Access-Control-Allow-Credentials": true,
       },
     }).then((response) => {
-      // console.log(response.data.rows[0].username);
+      console.log(response.data.auth);
       if (response.data.message) {
         setLoginStatus(response.data.message);
         toast.error(`${response.data.message}`, {
@@ -33,7 +35,12 @@ const Login = () => {
           progress: undefined,
         });
       } else {
-        setLoginStatus(response.data.rows[0].username);
+        setLoginStatus(response.data.auth);
+        localStorage.setItem(
+          "profile",
+          JSON.stringify(response.data.result.rows[0])
+        );
+        localStorage.setItem("token", response.data.token);
         toast.success("Logged In Successfully!", {
           position: "bottom-right",
           autoClose: 2000,
@@ -43,16 +50,10 @@ const Login = () => {
           draggable: true,
           progress: undefined,
         });
+        return history.push("/");
       }
     });
   };
-
-  useEffect(() => {
-    Axios.get("http://localhost:3001/login").then((res) => {
-      if (res.data.loggedIn === true) setLoginStatus(res.data.user[0].username);
-    });
-    // eslint-disable-next-line
-  }, []);
 
   const { Title } = Typography;
   return (
@@ -115,7 +116,7 @@ const Login = () => {
           </Button>
           {/* Or <a href="#">register now!</a> */}
         </Form.Item>
-        {loginStatus}
+        {console.log(loginStatus)}
       </Form>
       <ToastContainer
         position="bottom-right"
