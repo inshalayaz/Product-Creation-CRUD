@@ -4,7 +4,6 @@ import { useDrop } from "react-dnd";
 import "./Style.css";
 import { Button } from "antd";
 import { AppContext } from "../../context/AppContext";
-import uuid from "react-uuid";
 
 const FieldList = [
   {
@@ -53,7 +52,7 @@ function Form() {
 
   return (
     <>
-      <div className="fields">
+      <div className="Pictures">
         {FieldList.map((field) => {
           return <Field type={field.type} id={field.id} />;
         })}
