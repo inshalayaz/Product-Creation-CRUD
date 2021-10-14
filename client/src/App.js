@@ -7,6 +7,9 @@ import NoAccess from "./pages/NoAccess/NoAccess";
 import Register from "./pages/Register/Register";
 import Navbar from "./components/Products/Navbar/Navbar";
 import { AppContext } from "./context/AppContext";
+import DynamicForm from "./pages/DynamicForm/DynamicForm";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 function App() {
   var authStatus = false;
@@ -18,10 +21,19 @@ function App() {
 
   const [products, setProducts] = useState();
   const [loginStatus, setLoginStatus] = useState(authStatus);
+  const [board, setBoard] = useState([]);
+
   return (
     <div className="App">
       <AppContext.Provider
-        value={{ products, setProducts, loginStatus, setLoginStatus }}
+        value={{
+          products,
+          setProducts,
+          loginStatus,
+          setLoginStatus,
+          board,
+          setBoard,
+        }}
       >
         <Router>
           <Navbar />
@@ -31,6 +43,11 @@ function App() {
             </Route>
             <Route path="/register">
               <Register />
+            </Route>
+            <Route path="/form">
+              <DndProvider backend={HTML5Backend}>
+                <DynamicForm />
+              </DndProvider>
             </Route>
             <Route path="/noaccess">
               <NoAccess />
